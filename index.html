@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>注音符號聲辨挑戰賽 - 聽音辨字趣味遊戲</title>
+  <meta name="description" content="一個精美的互動式注音符號聲辨遊戲。提供六選一挑戰，支援無限制遊玩，幫助您快速掌握注音符號發音與拼音！">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+TC:wght@300;400;700;900&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="light-mode">
+  <!-- Confetti Canvas -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo-area">
+        <div class="logo-icon">ㄅ</div>
+        <div class="logo-text">
+          <h1>注音聲辨王</h1>
+          <p>Bopomofo Phonetic Master</p>
+        </div>
+      </div>
+      <div class="header-controls">
+        <button id="theme-toggle-btn" class="icon-btn" title="切換深淺模式" aria-label="Toggle Theme">
+          <i class="fas fa-moon"></i>
+        </button>
+        <button id="help-btn" class="icon-btn" title="遊戲說明與注音表" aria-label="Open Help Chart">
+          <i class="fas fa-book-open"></i>
+        </button>
+        <button id="settings-btn" class="icon-btn" title="設定" aria-label="Open Settings">
+          <i class="fas fa-cog"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="main-content">
+      <!-- Left: Game Dashboard -->
+      <section class="game-section">
+        <!-- Stats Bar -->
+        <div class="stats-bar card">
+          <div class="stat-item">
+            <span class="stat-label">答對數</span>
+            <span id="stat-correct" class="stat-val correct-color">0</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-label">連續答對</span>
+            <span id="stat-streak" class="stat-val streak-color">0 <i class="fas fa-fire"></i></span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-label">準確率</span>
+            <span id="stat-accuracy" class="stat-val text-primary">0%</span>
+          </div>
+        </div>
+
+        <!-- Main Game Panel -->
+        <div class="game-card card">
+          <div class="game-card-header">
+            <span id="game-mode-badge" class="badge">聲母挑戰</span>
+            <div class="audio-replay-container">
+              <button id="play-sound-btn" class="play-btn" aria-label="播放題目聲音">
+                <span class="pulse-ring"></span>
+                <i class="fas fa-volume-up play-icon"></i>
+                <!-- Soundwave Visualizer -->
+                <div class="sound-wave" id="visualizer">
+                  <span></span><span></span><span></span><span></span><span></span>
+                </div>
+              </button>
+              <p class="play-hint">點擊播放聲音</p>
+            </div>
+          </div>
+
+          <div class="game-instruction">
+            <h2>聽聽看，這是哪一個注音符號？</h2>
+            <p class="keyboard-tip">提示：您可以使用鍵盤快捷鍵 <kbd>1</kbd> 到 <kbd>6</kbd> 來回答</p>
+          </div>
+
+          <!-- Options Grid (6 Choices) -->
+          <div class="options-grid" id="options-container">
+            <!-- Dynamically populated choices -->
+            <button class="option-btn" data-index="0" id="opt-0">
+              <span class="option-number">1</span>
+              <span class="option-symbol">ㄅ</span>
+              <span class="option-pinyin">b</span>
+            </button>
+            <button class="option-btn" data-index="1" id="opt-1">
+              <span class="option-number">2</span>
+              <span class="option-symbol">ㄆ</span>
+              <span class="option-pinyin">p</span>
+            </button>
+            <button class="option-btn" data-index="2" id="opt-2">
+              <span class="option-number">3</span>
+              <span class="option-symbol">ㄇ</span>
+              <span class="option-pinyin">m</span>
+            </button>
+            <button class="option-btn" data-index="3" id="opt-3">
+              <span class="option-number">4</span>
+              <span class="option-symbol">ㄈ</span>
+              <span class="option-pinyin">f</span>
+            </button>
+            <button class="option-btn" data-index="4" id="opt-4">
+              <span class="option-number">5</span>
+              <span class="option-symbol">ㄉ</span>
+              <span class="option-pinyin">d</span>
+            </button>
+            <button class="option-btn" data-index="5" id="opt-5">
+              <span class="option-number">6</span>
+              <span class="option-symbol">ㄊ</span>
+              <span class="option-pinyin">t</span>
+            </button>
+          </div>
+
+          <!-- Toast Feedback -->
+          <div id="feedback-banner" class="feedback-banner hidden">
+            <i class="feedback-icon fas"></i>
+            <span id="feedback-text">答對了！太棒了！</span>
+          </div>
+
+          <!-- Action Buttons / Next Button -->
+          <div class="game-footer">
+            <button id="hint-btn" class="secondary-btn"><i class="far fa-lightbulb"></i> 提示一下</button>
+            <button id="next-btn" class="primary-btn disabled" disabled>下一題 <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right: Learning Hub & History (Collapsible on mobile) -->
+      <section class="side-panel">
+        <!-- History / Session Log Card -->
+        <div class="history-card card">
+          <div class="card-header">
+            <h3><i class="fas fa-history"></i> 本次答題紀錄</h3>
+            <button id="clear-history-btn" class="text-btn" title="清除紀錄">清除</button>
+          </div>
+          <div class="history-list-wrapper">
+            <ul id="history-list" class="history-list">
+              <li class="history-empty">尚無答題紀錄，開始遊玩吧！</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Helper Quick Card -->
+        <div class="helper-card card">
+          <h3><i class="fas fa-magic"></i> 學習小工具</h3>
+          <p>Speech Synthesis 語音功能會調用您裝置中的繁體中文發音。如果聲音不清晰，可以開啟「例字提示」來輔助學習！</p>
+          <div class="helper-actions">
+            <button id="quick-chart-btn" class="outline-btn"><i class="fas fa-table"></i> 開啟注音符號表</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Modals -->
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal-overlay hidden">
+      <div class="modal card">
+        <div class="modal-header">
+          <h2><i class="fas fa-cog"></i> 遊戲設定</h2>
+          <button class="close-modal-btn" data-modal="settings-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="settings-form">
+            <!-- Bopomofo Categories Selection -->
+            <div class="form-group">
+              <label class="form-label">出題範圍</label>
+              <div class="radio-group">
+                <label class="radio-label">
+                  <input type="radio" name="scope" value="all">
+                  <span>全部 (37字)</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="scope" value="initial">
+                  <span>聲母 (21字)</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="scope" value="medial">
+                  <span>介母 (3字)</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="scope" value="final">
+                  <span>韻母 (13字)</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="scope" value="synthesis">
+                  <span>合成音 / 結合韻 (43字)</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="scope" value="tone" checked>
+                  <span>聲調聲辨挑戰 (33字)</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Game Mode -->
+            <div class="form-group">
+              <label class="form-label">挑戰模式</label>
+              <div class="radio-group">
+                <label class="radio-label">
+                  <input type="radio" name="challenge-mode" value="classic" checked>
+                  <span>經典模式 (無限練習)</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="challenge-mode" value="streak">
+                  <span>連勝挑戰 (答錯即重新計分)</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Voice Selection -->
+            <div class="form-group">
+              <label for="voice-select" class="form-label">發音語音選擇 (zh-TW)</label>
+              <select id="voice-select" class="form-control">
+                <option value="default">系統預設語音</option>
+              </select>
+              <p class="form-help">如果沒有聽見聲音，請確認裝置音量已開啟，或嘗試更換不同的瀏覽器。</p>
+            </div>
+
+            <!-- Audio Speed -->
+            <div class="form-group">
+              <label for="speed-range" class="form-label">發音速度: <span id="speed-val">1.0</span>x</label>
+              <input type="range" id="speed-range" class="slider" min="0.5" max="1.5" step="0.1" value="1.0">
+            </div>
+
+            <!-- Options & Assistance -->
+            <div class="form-group">
+              <label class="form-label">輔助功能</label>
+              <div class="checkbox-group">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="setting-show-pinyin" checked>
+                  <span>顯示拼音對照 (底部的 b, p, m, f...)</span>
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" id="setting-word-hint">
+                  <span>發音包含例字 (例：播放「ㄅ」時讀出「包的ㄅ」)</span>
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" id="setting-auto-next">
+                  <span>答對時自動進入下一題 (1.2秒後)</span>
+                </label>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="primary-btn close-modal-btn" data-modal="settings-modal">完成設定</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Help & Bopomofo Chart Modal -->
+    <div id="help-modal" class="modal-overlay hidden">
+      <div class="modal card large-modal">
+        <div class="modal-header">
+          <h2><i class="fas fa-book-open"></i> 注音符號學習對照表</h2>
+          <button class="close-modal-btn" data-modal="help-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="chart-instructions">
+            <p>點擊下方任一注音符號卡片，即可<strong>聆聽正確發音</strong>、查看對應拼音與說明！</p>
+          </div>
+
+          <!-- Chart Sections -->
+          <div class="chart-section-title">
+            <span class="dot initial-dot"></span> 聲母 Initials (21)
+          </div>
+          <div class="chart-grid initials-grid" id="chart-initials">
+            <!-- Filled dynamically -->
+          </div>
+
+          <div class="chart-section-title mt-4">
+            <span class="dot medial-dot"></span> 介母 Medials (3)
+          </div>
+          <div class="chart-grid medials-grid" id="chart-medials">
+            <!-- Filled dynamically -->
+          </div>
+
+          <div class="chart-section-title mt-4">
+            <span class="dot final-dot"></span> 韻母 Finals (13)
+          </div>
+          <div class="chart-grid finals-grid" id="chart-finals">
+            <!-- Filled dynamically -->
+          </div>
+
+          <div class="chart-section-title mt-4">
+            <span class="dot synthesis-dot"></span> 合成音 / 結合韻 Synthesis (43)
+          </div>
+          <div class="chart-grid synthesis-grid" id="chart-synthesis">
+            <!-- Filled dynamically -->
+          </div>
+
+          <div class="chart-section-title mt-4">
+            <span class="dot tone-dot"></span> 聲調挑戰 Tone Challenge (33)
+          </div>
+          <div class="chart-grid tone-grid" id="chart-tone">
+            <!-- Filled dynamically -->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="primary-btn close-modal-btn" data-modal="help-modal">關閉表格</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="app-footer-bar">
+    <p>© 2026 注音聲辨王 · 讓學習注音變得簡單有趣</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

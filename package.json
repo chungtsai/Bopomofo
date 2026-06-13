@@ -1,0 +1,17 @@
+{
+  "name": "bopomofo-game",
+  "version": "1.0.0",
+  "description": "Bopomofo (注音符號) phonetic recognition game",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx -y http-server -p 3000 -o"
+  },
+  "keywords": [
+    "bopomofo",
+    "learning",
+    "game",
+    "zh-tw"
+  ],
+  "author": "",
+  "license": "ISC"
+}

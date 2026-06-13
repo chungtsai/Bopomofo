@@ -147,7 +147,30 @@ const BOPOMOFO_DATA = [
   { symbol: 'ㄒㄧ', pinyin: 'xī', name: 'ㄒㄧ (xī)', category: 'tone', baseSyllable: 'ㄒㄧ', example: '西', phrase: '東西的西 (一聲)', hint: '一聲 (Flat)', audioText: '西' },
   { symbol: 'ㄒㄧˊ', pinyin: 'xí', name: 'ㄒㄧˊ (xí)', category: 'tone', baseSyllable: 'ㄒㄧ', example: '席', phrase: '主席的席 (二聲)', hint: '二聲 (Rising)', audioText: '席' },
   { symbol: 'ㄒㄧˇ', pinyin: 'xǐ', name: 'ㄒㄧˇ (xǐ)', category: 'tone', baseSyllable: 'ㄒㄧ', example: '洗', phrase: '洗衣服的洗 (三聲)', hint: '三聲 (Dipping)', audioText: '洗' },
-  { symbol: 'ㄒㄧˋ', pinyin: 'xì', name: 'ㄒㄧˋ (xì)', category: 'tone', baseSyllable: 'ㄒㄧ', example: '細', phrase: '粗細的細 (四聲)', hint: '四聲 (Falling)', audioText: '細' }
+  { symbol: 'ㄒㄧˋ', pinyin: 'xì', name: 'ㄒㄧˋ (xì)', category: 'tone', baseSyllable: 'ㄒㄧ', example: '細', phrase: '粗細的細 (四聲)', hint: '四聲 (Falling)', audioText: '細' },
+
+  // --- 完整單字挑戰 Vocabulary Challenge (21) ---
+  { symbol: 'ㄓㄨㄛ ㄗ˙', pinyin: 'zhuōzi', name: 'ㄓㄨㄛ ㄗ˙ (zhuōzi)', category: 'vocabulary', example: '桌', phrase: '桌子', hint: '桌子 (Table / Desk)', audioText: '桌子' },
+  { symbol: 'ㄧˇ ㄗ˙', pinyin: 'yǐzi', name: 'ㄧˇ ㄗ˙ (yǐzi)', category: 'vocabulary', example: '椅', phrase: '椅子', hint: '椅子 (Chair)', audioText: '椅子' },
+  { symbol: 'ㄆㄧㄥˊ ㄍㄨㄛˇ', pinyin: 'píngguǒ', name: 'ㄆㄧㄥˊ ㄍㄨㄛˇ (píngguǒ)', category: 'vocabulary', example: '蘋', phrase: '蘋果', hint: '蘋果 (Apple)', audioText: '蘋果' },
+  { symbol: 'ㄒㄧㄤ ㄐㄧㄠ', pinyin: 'xiāngjiāo', name: 'ㄒㄧㄤ ㄐㄧㄠ (xiāngjiāo)', category: 'vocabulary', example: '香', phrase: '香蕉', hint: '香蕉 (Banana)', audioText: '香蕉' },
+  { symbol: 'ㄈㄟ ㄐㄧ', pinyin: 'fēijī', name: 'ㄈㄟ ㄐㄧ (fēijī)', category: 'vocabulary', example: '飛', phrase: '飛機', hint: '飛機 (Airplane)', audioText: '飛機' },
+  { symbol: 'ㄑㄧˋ ㄔㄜ', pinyin: 'qìchē', name: 'ㄑㄧˋ ㄔㄜ (qìchē)', category: 'vocabulary', example: '汽', phrase: '汽車', hint: '汽車 (Car)', audioText: '汽車' },
+  { symbol: 'ㄒㄧ ㄍㄨㄚ', pinyin: 'xīguā', name: 'ㄒㄧ ㄍㄨㄚ (xīguā)', category: 'vocabulary', example: '西', phrase: '西瓜', hint: '西瓜 (Watermelon)', audioText: '西瓜' },
+  { symbol: 'ㄇㄠ ㄇㄧ', pinyin: 'māomī', name: 'ㄇㄠ ㄇㄧ (māomī)', category: 'vocabulary', example: '貓', phrase: '貓咪', hint: '貓咪 (Cat)', audioText: '貓咪' },
+  { symbol: 'ㄒㄧㄠˇ ㄍㄡˇ', pinyin: 'xiǎogǒu', name: 'ㄒㄧㄠˇ ㄍㄡˇ (xiǎogǒu)', category: 'vocabulary', example: '狗', phrase: '小狗', hint: '小狗 (Dog)', audioText: '小狗' },
+  { symbol: 'ㄧ ㄈㄨˊ', pinyin: 'yīfú', name: 'ㄧ ㄈㄨˊ (yīfú)', category: 'vocabulary', example: '衣', phrase: '衣服', hint: '衣服 (Clothes)', audioText: '衣服' },
+  { symbol: 'ㄉㄧㄢˋ ㄏㄨㄚˋ', pinyin: 'diànhuà', name: 'ㄉㄧㄢˋ ㄏㄨㄚˋ (diànhuà)', category: 'vocabulary', example: '電', phrase: '電話', hint: '電話 (Telephone)', audioText: '電話' },
+  { symbol: 'ㄇㄧㄢˋ ㄅㄠ', pinyin: 'miànbāo', name: 'ㄇㄧㄢˋ ㄅㄠ (miànbāo)', category: 'vocabulary', example: '麵', phrase: '麵包', hint: '麵包 (Bread)', audioText: '麵包' },
+  { symbol: 'ㄋㄧㄡˊ ㄋㄞˇ', pinyin: 'niúnǎi', name: 'ㄋㄧㄡˊ ㄋㄞˇ (niúnǎi)', category: 'vocabulary', example: '牛', phrase: '牛奶', hint: '牛奶 (Milk)', audioText: '牛奶' },
+  { symbol: 'ㄊㄞˋ ㄧㄤˊ', pinyin: 'tàiyáng', name: 'ㄊㄞˋ ㄧㄤˊ (tàiyáng)', category: 'vocabulary', example: '太', phrase: '太陽', hint: '太陽 (Sun)', audioText: '太陽' },
+  { symbol: 'ㄩㄝˋ ㄌㄧㄤˋ', pinyin: 'yuèliàng', name: 'ㄩㄝˋ ㄌㄧㄤˋ (yuèliàng)', category: 'vocabulary', example: '月', phrase: '月亮', hint: '月亮 (Moon)', audioText: '月亮' },
+  { symbol: 'ㄊㄨˋ ㄗ˙', pinyin: 'tùzi', name: 'ㄊㄨˋ ㄗ˙ (tùzi)', category: 'vocabulary', example: '兔', phrase: '兔子', hint: '兔子 (Rabbit)', audioText: '兔子' },
+  { symbol: 'ㄌㄠˇ ㄕ', pinyin: 'lǎoshī', name: 'ㄌㄠˇ ㄕ (lǎoshī)', category: 'vocabulary', example: '老', phrase: '老師', hint: '老師 (Teacher)', audioText: '老師' },
+  { symbol: 'ㄒㄩㄝˊ ㄕㄥ', pinyin: 'xuéshēng', name: 'ㄒㄩㄝˊ ㄕㄥ (xuéshēng)', category: 'vocabulary', example: '學', phrase: '學生', hint: '學生 (Student)', audioText: '學生' },
+  { symbol: 'ㄑㄧˋ ㄑㄧㄡˊ', pinyin: 'qìqiú', name: 'ㄑㄧˋ ㄑㄧㄡˊ (qìqiú)', category: 'vocabulary', example: '氣', phrase: '氣球', hint: '氣球 (Balloon)', audioText: '氣球' },
+  { symbol: 'ㄅㄧㄥˇ ㄍㄢ', pinyin: 'bǐnggān', name: 'ㄅㄧㄥˇ ㄍㄢ (bǐnggān)', category: 'vocabulary', example: '餅', phrase: '餅乾', hint: '餅乾 (Cookie)', audioText: '餅乾' },
+  { symbol: 'ㄕㄨㄟˇ ㄍㄨㄛˇ', pinyin: 'shuǐguǒ', name: 'ㄕㄨㄟˇ ㄍㄨㄛˇ (shuǐguǒ)', category: 'vocabulary', example: '水', phrase: '水果', hint: '水果 (Fruit)', audioText: '水果' }
 ];
 
 // ==========================================================================
@@ -282,7 +305,11 @@ function speak(bopoObj, includeExample = false, onEndCallback = null) {
     // Custom tweaks for clearer raw consonant pronunciation in Taiwan voices if needed
     // e.g. Some voices read ㄅ as "b" (very short), so we read it as "ㄅ" or use the phrase helper.
     if (includeExample || state.settings.wordHint) {
-      textToSpeak = `${bopoObj.audioText || bopoObj.symbol}，${bopoObj.phrase}`;
+      if (bopoObj.category === 'vocabulary') {
+        textToSpeak = bopoObj.audioText;
+      } else {
+        textToSpeak = `${bopoObj.audioText || bopoObj.symbol}，${bopoObj.phrase}`;
+      }
     }
 
     const utterance = new SpeechSynthesisUtterance(textToSpeak);
@@ -348,7 +375,9 @@ function loadNewQuestion() {
 
   // 1. Filter dataset based on selected scope
   let pool = BOPOMOFO_DATA.filter(item => {
-    if (state.settings.scope === 'all') return true;
+    if (state.settings.scope === 'all') {
+      return item.category === 'initial' || item.category === 'medial' || item.category === 'final';
+    }
     return item.category === state.settings.scope;
   });
 
@@ -363,7 +392,7 @@ function loadNewQuestion() {
   state.currentQuestion.correctBopo = correctBopo;
 
   // Update game mode badge text
-  const badgeMap = { all: '綜合挑戰', initial: '聲母挑戰', medial: '介母挑戰', final: '韻母挑戰', synthesis: '合成音挑戰', tone: '聲調聲辨挑戰' };
+  const badgeMap = { all: '綜合挑戰', initial: '聲母挑戰', medial: '介母挑戰', final: '韻母挑戰', synthesis: '合成音挑戰', tone: '聲調聲辨挑戰', vocabulary: '完整單字挑戰' };
   document.getElementById('game-mode-badge').textContent = badgeMap[state.settings.scope] || '綜合挑戰';
 
   // 2. Generate 5 wrong choices
@@ -427,6 +456,11 @@ function renderOptions() {
     // Bopomofo Symbol
     const symSpan = document.createElement('span');
     symSpan.className = 'option-symbol';
+    if (bopo.category === 'vocabulary') {
+      symSpan.classList.add('vocabulary-symbol');
+    } else if (bopo.symbol && bopo.symbol.length > 1) {
+      symSpan.classList.add('long-symbol');
+    }
     symSpan.textContent = bopo.symbol;
     btn.appendChild(symSpan);
 
@@ -630,6 +664,7 @@ function buildBopomofoChart() {
   const finalsContainer = document.getElementById('chart-finals');
   const synthesisContainer = document.getElementById('chart-synthesis');
   const toneContainer = document.getElementById('chart-tone');
+  const vocabularyContainer = document.getElementById('chart-vocabulary');
 
   if (!initialsContainer || !medialsContainer || !finalsContainer) return;
 
@@ -638,6 +673,7 @@ function buildBopomofoChart() {
   finalsContainer.innerHTML = '';
   if (synthesisContainer) synthesisContainer.innerHTML = '';
   if (toneContainer) toneContainer.innerHTML = '';
+  if (vocabularyContainer) vocabularyContainer.innerHTML = '';
 
   BOPOMOFO_DATA.forEach(bopo => {
     const item = document.createElement('div');
@@ -661,7 +697,11 @@ function buildBopomofoChart() {
 
     const ex = document.createElement('span');
     ex.className = 'chart-item-example';
-    ex.textContent = `${bopo.example}(${bopo.pinyin})`;
+    if (bopo.category === 'vocabulary') {
+      ex.textContent = bopo.phrase;
+    } else {
+      ex.textContent = `${bopo.example}(${bopo.pinyin})`;
+    }
     item.appendChild(ex);
 
     // Click handler to play pronunciation
@@ -686,6 +726,8 @@ function buildBopomofoChart() {
       if (synthesisContainer) synthesisContainer.appendChild(item);
     } else if (bopo.category === 'tone') {
       if (toneContainer) toneContainer.appendChild(item);
+    } else if (bopo.category === 'vocabulary') {
+      if (vocabularyContainer) vocabularyContainer.appendChild(item);
     }
   });
 }

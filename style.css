@@ -611,6 +611,16 @@ kbd {
   line-height: 1;
 }
 
+.option-symbol.long-symbol {
+  font-size: 2.2rem;
+}
+
+.option-symbol.vocabulary-symbol {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
 .option-pinyin {
   font-size: 1rem;
   color: var(--text-secondary);
@@ -1111,6 +1121,7 @@ kbd {
 .final-dot { background: var(--warning); }
 .synthesis-dot { background: #8b5cf6; }
 .tone-dot { background: #10b981; }
+.vocabulary-dot { background: #ec4899; }
 
 .chart-grid {
   display: grid;
@@ -1141,6 +1152,8 @@ kbd {
 .chart-item.chart-final:hover { border-color: var(--warning); }
 .chart-item.chart-synthesis:hover { border-color: #8b5cf6; }
 .chart-item.chart-tone:hover { border-color: #10b981; }
+.chart-item.chart-vocabulary:hover { border-color: #ec4899; }
+.chart-item.chart-vocabulary .chart-item-symbol { font-size: 1.3rem; }
 
 .chart-item-symbol {
   font-size: 1.8rem;
@@ -1292,6 +1305,14 @@ kbd {
   
   .option-symbol {
     font-size: 2.5rem;
+  }
+  
+  .option-symbol.long-symbol {
+    font-size: 1.8rem;
+  }
+  
+  .option-symbol.vocabulary-symbol {
+    font-size: 1.3rem;
   }
   
   .play-btn {

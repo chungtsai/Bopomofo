@@ -1331,3 +1331,261 @@ kbd {
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
+/* ==========================================================================
+   Input Mode (Listen & Spell Challenge)
+   ========================================================================== */
+.input-mode-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin: 1rem 0;
+  animation: fadeIn var(--transition-fast) ease-out;
+}
+
+.input-display-area {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--input-bg);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.5rem 1rem;
+  box-shadow: var(--shadow-inner);
+}
+
+.bopo-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--text-main);
+  font-size: 2.2rem;
+  font-weight: 800;
+  font-family: 'Noto Sans TC', sans-serif;
+  text-align: center;
+  padding: 0.5rem 0;
+  outline: none;
+  letter-spacing: 1px;
+}
+
+.bopo-input::placeholder {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.input-controls {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.input-action-btn {
+  background: var(--card-bg-solid);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
+}
+
+.input-action-btn:hover {
+  background: var(--input-bg);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.input-action-btn:active {
+  transform: scale(0.92);
+}
+
+/* Virtual Keyboard Styles */
+.virtual-keyboard {
+  background: var(--card-bg-solid);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.2rem;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.kbd-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.kbd-section-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  margin-bottom: 0.1rem;
+  opacity: 0.8;
+}
+
+.kbd-grid {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.initials-grid-layout {
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.medials-grid-layout {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.finals-grid-layout {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.tones-grid-layout {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.kbd-split-container {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.kbd-split-container .medials-section {
+  flex: 3;
+}
+
+.kbd-split-container .finals-section {
+  flex: 5;
+}
+
+.kbd-split-container .tones-section {
+  flex: 2;
+}
+
+.kbd-footer-row {
+  display: flex;
+  margin-top: 0.2rem;
+}
+
+.kbd-key {
+  background: var(--input-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-main);
+  font-size: 1.25rem;
+  font-weight: 700;
+  padding: 0.6rem 0.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
+  user-select: none;
+}
+
+.kbd-key:hover {
+  background: var(--card-bg-solid);
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.kbd-key:active {
+  transform: translateY(0) scale(0.95);
+}
+
+.tone-key {
+  background: rgba(16, 185, 129, 0.05);
+  border-color: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.tone-key:hover {
+  background: #10b981;
+  color: white;
+  border-color: #10b981;
+}
+
+.space-key {
+  flex: 1;
+  font-size: 0.95rem;
+  font-weight: 600;
+  background: rgba(99, 102, 241, 0.05);
+  border-color: rgba(99, 102, 241, 0.15);
+  color: var(--primary);
+  padding: 0.8rem 0;
+}
+
+.space-key:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.submit-answer-btn {
+  padding: 1rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  margin-top: 0.5rem;
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-fast);
+}
+
+.submit-answer-btn.btn-correct {
+  background: var(--correct) !important;
+  border-color: var(--correct) !important;
+  color: white !important;
+}
+
+.submit-answer-btn.btn-wrong {
+  background: var(--wrong) !important;
+  border-color: var(--wrong) !important;
+  color: white !important;
+}
+
+@media (max-width: 768px) {
+  .bopo-input {
+    font-size: 1.6rem;
+  }
+  
+  .kbd-key {
+    font-size: 1.05rem;
+    padding: 0.5rem 0.1rem;
+  }
+  
+  .kbd-split-container {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  
+  .kbd-split-container .medials-section,
+  .kbd-split-container .finals-section,
+  .kbd-split-container .tones-section {
+    flex: none;
+    width: 100%;
+  }
+
+  .medials-grid-layout {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .finals-grid-layout {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .tones-grid-layout {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+

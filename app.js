@@ -191,8 +191,9 @@ const state = {
   },
   history: [],
   settings: {
-    scope: 'tone',          // 'all', 'initial', 'medial', 'final', 'synthesis', 'tone'
+    scope: 'tone',          // 'all', 'initial', 'medial', 'final', 'synthesis', 'tone', 'vocabulary'
     challengeMode: 'classic', // 'classic', 'streak'
+    questionType: 'choices', // 'choices', 'input'
     voice: 'default',
     speed: 1.0,
     showPinyin: true,
@@ -395,39 +396,71 @@ function loadNewQuestion() {
   const badgeMap = { all: '綜合挑戰', initial: '聲母挑戰', medial: '介母挑戰', final: '韻母挑戰', synthesis: '合成音挑戰', tone: '聲調聲辨挑戰', vocabulary: '完整單字挑戰' };
   document.getElementById('game-mode-badge').textContent = badgeMap[state.settings.scope] || '綜合挑戰';
 
-  // 2. Generate 5 wrong choices
-  let otherChoices = [];
-  
-  // If in tone challenge mode, prioritize other tones of the same baseSyllable
-  if (state.settings.scope === 'tone' && correctBopo.baseSyllable) {
-    otherChoices = pool.filter(item => 
-      item.baseSyllable === correctBopo.baseSyllable && 
-      item.symbol !== correctBopo.symbol
-    );
+  // Toggle Display based on Question Type
+  const optContainer = document.getElementById('options-container');
+  const inputContainer = document.getElementById('input-container');
+  const instructionTitle = document.querySelector('.game-instruction h2');
+  const keyboardTip = document.querySelector('.keyboard-tip');
+
+  if (state.settings.questionType === 'choices') {
+    if (optContainer) optContainer.classList.remove('hidden');
+    if (inputContainer) inputContainer.classList.add('hidden');
+    if (instructionTitle) instructionTitle.textContent = '聽聽看，這是哪一個注音符號？';
+    if (keyboardTip) keyboardTip.innerHTML = '提示：您可以使用鍵盤快捷鍵 <kbd>1</kbd> 到 <kbd>6</kbd> 來回答';
+
+    // 2. Generate 5 wrong choices
+    let otherChoices = [];
+    
+    // If in tone challenge mode, prioritize other tones of the same baseSyllable
+    if (state.settings.scope === 'tone' && correctBopo.baseSyllable) {
+      otherChoices = pool.filter(item => 
+        item.baseSyllable === correctBopo.baseSyllable && 
+        item.symbol !== correctBopo.symbol
+      );
+    } else {
+      otherChoices = pool.filter(item => item.symbol !== correctBopo.symbol);
+    }
+
+    // If we need more items to reach 5 wrong choices, draw randomly from the rest of the pool
+    if (otherChoices.length < 5) {
+      const remainingPool = pool.filter(item => 
+        item.symbol !== correctBopo.symbol && 
+        !otherChoices.some(o => o.symbol === item.symbol)
+      );
+      shuffleArray(remainingPool);
+      otherChoices = [...otherChoices, ...remainingPool].slice(0, 5);
+    } else {
+      shuffleArray(otherChoices);
+      otherChoices = otherChoices.slice(0, 5);
+    }
+
+    // Combine and shuffle to make 6 final choices
+    const finalChoices = [correctBopo, ...otherChoices];
+    shuffleArray(finalChoices);
+    state.currentQuestion.options = finalChoices;
+
+    // Render options to DOM
+    renderOptions();
   } else {
-    otherChoices = pool.filter(item => item.symbol !== correctBopo.symbol);
+    if (optContainer) optContainer.classList.add('hidden');
+    if (inputContainer) inputContainer.classList.remove('hidden');
+    if (instructionTitle) instructionTitle.textContent = '聽聽看，請拼寫出正確的注音符號';
+    if (keyboardTip) keyboardTip.innerHTML = '提示：您可以使用實體鍵盤直接打字，或使用下方鍵盤輸入，Enter 鍵送出';
+
+    // Clear input field
+    const inputField = document.getElementById('bopo-input-field');
+    if (inputField) {
+      inputField.value = '';
+    }
+
+    // Reset submit button state
+    const submitBtn = document.getElementById('bopo-submit-btn');
+    if (submitBtn) {
+      submitBtn.className = 'primary-btn submit-answer-btn';
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '送出答案';
+    }
   }
-
-  // If we need more items to reach 5 wrong choices, draw randomly from the rest of the pool
-  if (otherChoices.length < 5) {
-    const remainingPool = pool.filter(item => 
-      item.symbol !== correctBopo.symbol && 
-      !otherChoices.some(o => o.symbol === item.symbol)
-    );
-    shuffleArray(remainingPool);
-    otherChoices = [...otherChoices, ...remainingPool].slice(0, 5);
-  } else {
-    shuffleArray(otherChoices);
-    otherChoices = otherChoices.slice(0, 5);
-  }
-
-  // Combine and shuffle to make 6 final choices
-  const finalChoices = [correctBopo, ...otherChoices];
-  shuffleArray(finalChoices);
-  state.currentQuestion.options = finalChoices;
-
-  // Render options to DOM
-  renderOptions();
 
   // Play question audio automatically (with slight delay for browser policy)
   setTimeout(() => {
@@ -829,6 +862,16 @@ function setupEventListeners() {
     });
   });
 
+  // Question type radios
+  const qTypeRadios = settingsForm.querySelectorAll('input[name="question-type"]');
+  qTypeRadios.forEach(radio => {
+    radio.addEventListener('change', (e) => {
+      state.settings.questionType = e.target.value;
+      saveSettings();
+      loadNewQuestion();
+    });
+  });
+
   // Voice selector
   document.getElementById('voice-select').addEventListener('change', (e) => {
     state.settings.voice = e.target.value;
@@ -862,45 +905,231 @@ function setupEventListeners() {
     saveSettings();
   });
 
+  // Virtual Keyboard click handlers
+  const kbdKeys = document.querySelectorAll('#virtual-keyboard .kbd-key');
+  kbdKeys.forEach(keyBtn => {
+    keyBtn.addEventListener('click', () => {
+      const char = keyBtn.getAttribute('data-char');
+      handleKeyInput(char);
+    });
+  });
+
+  // Input control action buttons
+  const backspaceBtn = document.getElementById('bopo-backspace-btn');
+  if (backspaceBtn) {
+    backspaceBtn.addEventListener('click', handleBackspace);
+  }
+
+  const clearBtn = document.getElementById('bopo-clear-btn');
+  if (clearBtn) {
+    clearBtn.addEventListener('click', handleClear);
+  }
+
+  const submitBtn = document.getElementById('bopo-submit-btn');
+  if (submitBtn) {
+    submitBtn.addEventListener('click', submitInputAnswer);
+  }
+
   // Keyboard Navigation / Shortcuts (1-6 to choose, Enter/Space for next, R to replay)
   document.addEventListener('keydown', (e) => {
     // Ignore keyboard shortcuts if modal is open
     const openModals = document.querySelectorAll('.modal-overlay:not(.hidden)');
     if (openModals.length > 0) return;
 
-    const key = e.key;
+    const key = e.key.toLowerCase();
     
-    // Choose options (1-6)
-    if (key >= '1' && key <= '6') {
-      const idx = parseInt(key) - 1;
-      const optBtn = document.getElementById(`opt-${idx}`);
-      if (optBtn && !optBtn.disabled) {
-        const selectedSymbol = optBtn.dataset.symbol;
-        handleAnswer(selectedSymbol, optBtn);
+    if (state.settings.questionType === 'input') {
+      // 1. INPUT MODE SHORTCUTS
+      if (state.currentQuestion.hasAnswered) {
+        // Space or Enter for next question when answered
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          loadNewQuestion();
+        }
+        
+        // Replay audio (R)
+        if (key === 'r') {
+          if (state.currentQuestion.correctBopo) {
+            speak(state.currentQuestion.correctBopo);
+          }
+        }
+        return;
       }
-    }
-    
-    // Next question (Space or Enter when Next button is active)
-    if (key === 'Enter' || key === ' ') {
-      const nextBtn = document.getElementById('next-btn');
-      if (nextBtn && !nextBtn.disabled) {
+
+      // If not answered yet
+      if (e.key === 'Backspace') {
         e.preventDefault();
-        loadNewQuestion();
+        handleBackspace();
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        submitInputAnswer();
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        handleClear();
+      } else if (key === 'r') {
+        e.preventDefault();
+        if (state.currentQuestion.correctBopo) {
+          speak(state.currentQuestion.correctBopo);
+        }
+      } else if (key === 'h') {
+        e.preventDefault();
+        showHint();
+      } else {
+        // Map physical key to Bopomofo character
+        const bopoChar = BOPOMOFO_KEYMAP[e.key]; // Exact case check
+        if (bopoChar) {
+          e.preventDefault();
+          handleKeyInput(bopoChar);
+        }
       }
-    }
-
-    // Replay question audio (R)
-    if (key.toLowerCase() === 'r') {
-      if (state.currentQuestion.correctBopo) {
-        speak(state.currentQuestion.correctBopo);
+    } else {
+      // 2. CHOICES MODE SHORTCUTS (1-6 to choose, Enter/Space for next, R to replay, H for hint)
+      if (e.key >= '1' && e.key <= '6') {
+        const idx = parseInt(e.key) - 1;
+        const optBtn = document.getElementById(`opt-${idx}`);
+        if (optBtn && !optBtn.disabled) {
+          const selectedSymbol = optBtn.dataset.symbol;
+          handleAnswer(selectedSymbol, optBtn);
+        }
       }
-    }
+      
+      // Next question (Space or Enter when Next button is active)
+      if (e.key === 'Enter' || e.key === ' ') {
+        const nextBtn = document.getElementById('next-btn');
+        if (nextBtn && !nextBtn.disabled) {
+          e.preventDefault();
+          loadNewQuestion();
+        }
+      }
 
-    // Help sheet trigger (H)
-    if (key.toLowerCase() === 'h') {
-      showHint();
+      // Replay question audio (R)
+      if (key === 'r') {
+        if (state.currentQuestion.correctBopo) {
+          speak(state.currentQuestion.correctBopo);
+        }
+      }
+
+      // Help sheet trigger (H)
+      if (key === 'h') {
+        showHint();
+      }
     }
   });
+}
+
+// ==========================================================================
+// 8. 注音拼寫輸入邏輯 (Listen & Spell challenge helpers)
+// ==========================================================================
+const BOPOMOFO_KEYMAP = {
+  '1': 'ㄅ', '2': 'ㄉ', '3': 'ˇ', '4': 'ˋ', '5': 'ㄓ', '6': 'ˊ', '7': '˙', '8': 'ㄚ', '9': 'ㄞ', '0': 'ㄢ', '-': 'ㄦ',
+  'q': 'ㄆ', 'w': 'ㄊ', 'e': 'ㄍ', 'r': 'ㄐ', 't': 'ㄔ', 'y': 'ㄗ', 'u': 'ㄧ', 'i': 'ㄛ', 'o': 'ㄟ', 'p': 'ㄣ',
+  'a': 'ㄇ', 's': 'ㄋ', 'd': 'ㄎ', 'f': 'ㄑ', 'g': 'ㄕ', 'h': 'ㄘ', 'j': 'ㄨ', 'k': 'ㄜ', 'l': 'ㄠ', ';': 'ㄤ',
+  'z': 'ㄈ', 'x': 'ㄌ', 'c': 'ㄏ', 'v': 'ㄒ', 'b': 'ㄖ', 'n': 'ㄙ', 'm': 'ㄩ', ',': 'ㄝ', '.': 'ㄡ', '/': 'ㄥ'
+};
+
+function handleKeyInput(char) {
+  if (state.currentQuestion.hasAnswered) return;
+  const inputField = document.getElementById('bopo-input-field');
+  if (inputField) {
+    inputField.value += char;
+  }
+}
+
+function handleBackspace() {
+  if (state.currentQuestion.hasAnswered) return;
+  const inputField = document.getElementById('bopo-input-field');
+  if (inputField && inputField.value.length > 0) {
+    inputField.value = inputField.value.slice(0, -1);
+  }
+}
+
+function handleClear() {
+  if (state.currentQuestion.hasAnswered) return;
+  const inputField = document.getElementById('bopo-input-field');
+  if (inputField) {
+    inputField.value = '';
+  }
+}
+
+function submitInputAnswer() {
+  if (state.currentQuestion.hasAnswered) return;
+  
+  const inputField = document.getElementById('bopo-input-field');
+  if (!inputField) return;
+  
+  const userInput = inputField.value.trim();
+  if (userInput === '') {
+    showSystemNotification('error', '請輸入注音符號再送出！');
+    return;
+  }
+  
+  const correctSymbol = state.currentQuestion.correctBopo.symbol;
+  
+  // Normalize strings for comparison (remove spaces, ignore neutral tone mark variant)
+  const normalize = str => str.replace(/\s+/g, '').replace(/˙/g, '');
+  const userNorm = normalize(userInput);
+  const correctNorm = normalize(correctSymbol);
+  
+  const isCorrect = (userInput === correctSymbol || userNorm === correctNorm);
+  
+  state.currentQuestion.attempts++;
+  state.currentQuestion.hasAnswered = true;
+  
+  const submitBtn = document.getElementById('bopo-submit-btn');
+  if (submitBtn) {
+    submitBtn.disabled = true;
+  }
+  
+  const feedbackBanner = document.getElementById('feedback-banner');
+  const feedbackText = document.getElementById('feedback-text');
+  
+  if (isCorrect) {
+    state.score.correct++;
+    state.score.total++;
+    state.streak++;
+    if (state.streak > state.longestStreak) {
+      state.longestStreak = state.streak;
+    }
+    
+    if (submitBtn) {
+      submitBtn.classList.add('btn-correct');
+      submitBtn.innerHTML = '<i class="fas fa-check"></i> 答對了！';
+    }
+    
+    feedbackBanner.className = 'feedback-banner correct-banner';
+    feedbackBanner.querySelector('.feedback-icon').className = 'feedback-icon fas fa-check-circle';
+    feedbackText.innerHTML = `答對了！這是「${correctSymbol}」（${state.currentQuestion.correctBopo.phrase || ''}）`;
+    
+    startConfetti();
+    speak(state.currentQuestion.correctBopo, true);
+    
+    if (state.settings.autoNext) {
+      setTimeout(() => {
+        loadNewQuestion();
+      }, 1500);
+    }
+  } else {
+    state.score.total++;
+    state.streak = 0;
+    
+    if (submitBtn) {
+      submitBtn.classList.add('btn-wrong');
+      submitBtn.innerHTML = '<i class="fas fa-times"></i> 答錯了';
+    }
+    
+    feedbackBanner.className = 'feedback-banner wrong-banner';
+    feedbackBanner.querySelector('.feedback-icon').className = 'feedback-icon fas fa-times-circle';
+    feedbackText.innerHTML = `答錯囉！正確答案是「${correctSymbol}」（${state.currentQuestion.correctBopo.phrase || ''}）`;
+  }
+  
+  updateStatsUI();
+  addHistoryItem(state.currentQuestion.correctBopo, userInput, isCorrect);
+  
+  const nextBtn = document.getElementById('next-btn');
+  if (nextBtn) {
+    nextBtn.classList.remove('disabled');
+    nextBtn.disabled = false;
+  }
 }
 
 // Modal open/close helpers
@@ -972,6 +1201,10 @@ function syncSettingsUI() {
   // Set Challenge Mode Radios
   const modeRadio = form.querySelector(`input[name="challenge-mode"][value="${state.settings.challengeMode}"]`);
   if (modeRadio) modeRadio.checked = true;
+
+  // Set Question Type Radios
+  const qtypeRadio = form.querySelector(`input[name="question-type"][value="${state.settings.questionType}"]`);
+  if (qtypeRadio) qtypeRadio.checked = true;
 
   // Set Speed Slider
   const speedRange = document.getElementById('speed-range');

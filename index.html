@@ -122,6 +122,101 @@
             </button>
           </div>
 
+          <!-- Input Area (for Listen & Write mode) -->
+          <div class="input-mode-container hidden" id="input-container">
+            <div class="input-display-area">
+              <input type="text" id="bopo-input-field" class="bopo-input" placeholder="請輸入或點擊下方鍵盤..." readonly>
+              <div class="input-controls">
+                <button type="button" id="bopo-backspace-btn" class="input-action-btn" title="退格"><i class="fas fa-backspace"></i></button>
+                <button type="button" id="bopo-clear-btn" class="input-action-btn" title="清除"><i class="fas fa-trash-alt"></i></button>
+              </div>
+            </div>
+            
+            <!-- Virtual Keyboard -->
+            <div class="virtual-keyboard" id="virtual-keyboard">
+              <!-- Initials -->
+              <div class="kbd-section initials-section">
+                <div class="kbd-section-title">聲母 Initials</div>
+                <div class="kbd-grid initials-grid-layout">
+                  <button type="button" class="kbd-key" data-char="ㄅ">ㄅ</button>
+                  <button type="button" class="kbd-key" data-char="ㄆ">ㄆ</button>
+                  <button type="button" class="kbd-key" data-char="ㄇ">ㄇ</button>
+                  <button type="button" class="kbd-key" data-char="ㄈ">ㄈ</button>
+                  <button type="button" class="kbd-key" data-char="ㄉ">ㄉ</button>
+                  <button type="button" class="kbd-key" data-char="ㄊ">ㄊ</button>
+                  <button type="button" class="kbd-key" data-char="ㄋ">ㄋ</button>
+                  <button type="button" class="kbd-key" data-char="ㄌ">ㄌ</button>
+                  <button type="button" class="kbd-key" data-char="ㄍ">ㄍ</button>
+                  <button type="button" class="kbd-key" data-char="ㄎ">ㄎ</button>
+                  <button type="button" class="kbd-key" data-char="ㄏ">ㄏ</button>
+                  <button type="button" class="kbd-key" data-char="ㄐ">ㄐ</button>
+                  <button type="button" class="kbd-key" data-char="ㄑ">ㄑ</button>
+                  <button type="button" class="kbd-key" data-char="ㄒ">ㄒ</button>
+                  <button type="button" class="kbd-key" data-char="ㄓ">ㄓ</button>
+                  <button type="button" class="kbd-key" data-char="ㄔ">ㄔ</button>
+                  <button type="button" class="kbd-key" data-char="ㄕ">ㄕ</button>
+                  <button type="button" class="kbd-key" data-char="ㄖ">ㄖ</button>
+                  <button type="button" class="kbd-key" data-char="ㄗ">ㄗ</button>
+                  <button type="button" class="kbd-key" data-char="ㄘ">ㄘ</button>
+                  <button type="button" class="kbd-key" data-char="ㄙ">ㄙ</button>
+                </div>
+              </div>
+              
+              <!-- Middle/Bottom row -->
+              <div class="kbd-split-container">
+                <!-- Medials -->
+                <div class="kbd-section medials-section">
+                  <div class="kbd-section-title">介母</div>
+                  <div class="kbd-grid medials-grid-layout">
+                    <button type="button" class="kbd-key" data-char="ㄧ">ㄧ</button>
+                    <button type="button" class="kbd-key" data-char="ㄨ">ㄨ</button>
+                    <button type="button" class="kbd-key" data-char="ㄩ">ㄩ</button>
+                  </div>
+                </div>
+
+                <!-- Finals -->
+                <div class="kbd-section finals-section">
+                  <div class="kbd-section-title">韻母 Finals</div>
+                  <div class="kbd-grid finals-grid-layout">
+                    <button type="button" class="kbd-key" data-char="ㄚ">ㄚ</button>
+                    <button type="button" class="kbd-key" data-char="ㄛ">ㄛ</button>
+                    <button type="button" class="kbd-key" data-char="ㄜ">ㄜ</button>
+                    <button type="button" class="kbd-key" data-char="ㄝ">ㄝ</button>
+                    <button type="button" class="kbd-key" data-char="ㄞ">ㄞ</button>
+                    <button type="button" class="kbd-key" data-char="ㄟ">ㄟ</button>
+                    <button type="button" class="kbd-key" data-char="ㄠ">ㄠ</button>
+                    <button type="button" class="kbd-key" data-char="ㄡ">ㄡ</button>
+                    <button type="button" class="kbd-key" data-char="ㄢ">ㄢ</button>
+                    <button type="button" class="kbd-key" data-char="ㄣ">ㄣ</button>
+                    <button type="button" class="kbd-key" data-char="ㄤ">ㄤ</button>
+                    <button type="button" class="kbd-key" data-char="ㄥ">ㄥ</button>
+                    <button type="button" class="kbd-key" data-char="ㄦ">ㄦ</button>
+                  </div>
+                </div>
+
+                <!-- Tones -->
+                <div class="kbd-section tones-section">
+                  <div class="kbd-section-title">聲調</div>
+                  <div class="kbd-grid tones-grid-layout">
+                    <button type="button" class="kbd-key tone-key" data-char="˙">˙</button>
+                    <button type="button" class="kbd-key tone-key" data-char="ˊ">ˊ</button>
+                    <button type="button" class="kbd-key tone-key" data-char="ˇ">ˇ</button>
+                    <button type="button" class="kbd-key tone-key" data-char="ˋ">ˋ</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Extra row: space -->
+              <div class="kbd-footer-row">
+                <button type="button" class="kbd-key space-key" data-char=" ">空格 Space</button>
+              </div>
+            </div>
+
+            <!-- Submit Answer -->
+            <button id="bopo-submit-btn" class="primary-btn submit-answer-btn">送出答案</button>
+          </div>
+
+
           <!-- Toast Feedback -->
           <div id="feedback-banner" class="feedback-banner hidden">
             <i class="feedback-icon fas"></i>
@@ -219,6 +314,21 @@
                 <label class="radio-label">
                   <input type="radio" name="challenge-mode" value="streak">
                   <span>連勝挑戰 (答錯即重新計分)</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Question Type -->
+            <div class="form-group">
+              <label class="form-label">答題題型</label>
+              <div class="radio-group">
+                <label class="radio-label">
+                  <input type="radio" name="question-type" value="choices" checked>
+                  <span>聽音選注音 (六選一)</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="question-type" value="input">
+                  <span>聽音寫注音 (拼寫挑戰)</span>
                 </label>
               </div>
             </div>

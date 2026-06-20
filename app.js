@@ -18,160 +18,7 @@ window.addEventListener('error', function(e) {
 // ==========================================================================
 // 1. 注音符號資料庫 (Bopomofo Database)
 // ==========================================================================
-const BOPOMOFO_DATA = [
-  // --- 聲母 Initials (21) ---
-  { symbol: 'ㄅ', pinyin: 'b', name: 'ㄅㄛ (bō)', category: 'initial', example: '包', phrase: '包子的包', hint: '英語中的 "b"（如 boy）' },
-  { symbol: 'ㄆ', pinyin: 'p', name: 'ㄆㄛ (pō)', category: 'initial', example: '婆', phrase: '外婆的婆', hint: '英語中的 "p"（送氣，如 pear）' },
-  { symbol: 'ㄇ', pinyin: 'm', name: 'ㄇㄛ (mō)', category: 'initial', example: '貓', phrase: '貓咪的貓', hint: '英語中的 "m"（如 cat）' },
-  { symbol: 'ㄈ', pinyin: 'f', name: 'ㄈㄛ (fō)', category: 'initial', example: '飛', phrase: '飛機的飛', hint: '英語中的 "f"（如 fly）' },
-  { symbol: 'ㄉ', pinyin: 'd', name: 'ㄉㄜ (dē)', category: 'initial', example: '地', phrase: '土地的地', hint: '英語中的 "d"（如 dog）' },
-  { symbol: 'ㄊ', pinyin: 't', name: 'ㄊㄜ (tē)', category: 'initial', example: '天', phrase: '天空的天', hint: '英語中的 "t"（送氣，如 toy）' },
-  { symbol: 'ㄋ', pinyin: 'n', name: 'ㄋㄜ (nē)', category: 'initial', example: '牛', phrase: '黃牛的牛', hint: '英語中的 "n"（如 no）' },
-  { symbol: 'ㄌ', pinyin: 'l', name: 'ㄌㄜ (lē)', category: 'initial', example: '老', phrase: '老師的老', hint: '英語中的 "l"（如 love）' },
-  { symbol: 'ㄍ', pinyin: 'g', name: 'ㄍㄜ (gē)', category: 'initial', example: '狗', phrase: '小狗的狗', hint: '英語中的 "g"（不送氣，如 go）' },
-  { symbol: 'ㄎ', pinyin: 'k', name: 'ㄎㄜ (kē)', category: 'initial', example: '開', phrase: '開門的開', hint: '英語中的 "k"（送氣，如 key）' },
-  { symbol: 'ㄏ', pinyin: 'h', name: 'ㄏㄜ (hē)', category: 'initial', example: '花', phrase: '花朵的花', hint: '英語中的 "h"（如 hat）' },
-  { symbol: 'ㄐ', pinyin: 'j', name: 'ㄐㄧ (jī)', category: 'initial', example: '雞', phrase: '小雞的雞', hint: '英語中的 "j"（不送氣，舌面音，如 jeep）' },
-  { symbol: 'ㄑ', pinyin: 'q', name: 'ㄑㄧ (qī)', category: 'initial', example: '七', phrase: '數字七的七', hint: '類似英語 "ch"（送氣，舌面音，如 cheap）' },
-  { symbol: 'ㄒ', pinyin: 'x', name: 'ㄒㄧ (xī)', category: 'initial', example: '西', phrase: '西瓜的西', hint: '類似英語 "sh"（舌面音，如 she）' },
-  { symbol: 'ㄓ', pinyin: 'zh', name: 'ㄓ (zhī)', category: 'initial', example: '豬', phrase: '小豬的豬', hint: '捲舌音 "zh"（不送氣，如 jury）' },
-  { symbol: 'ㄔ', pinyin: 'ch', name: 'ㄔ (chī)', category: 'initial', example: '車', phrase: '汽車的車', hint: '捲舌音 "ch"（送氣，如 church）' },
-  { symbol: 'ㄕ', pinyin: 'sh', name: 'ㄕ (shī)', category: 'initial', example: '書', phrase: '看書的書', hint: '捲舌音 "sh"（如 shoe）' },
-  { symbol: 'ㄖ', pinyin: 'r', name: 'ㄖ (rì)', category: 'initial', example: '日', phrase: '日期的日', hint: '捲舌音 "r"（如 raw）' },
-  { symbol: 'ㄗ', pinyin: 'z', name: 'ㄗ (zī)', category: 'initial', example: '字', phrase: '寫字的字', hint: '平舌音 "z"（不送氣，如 kids 中的 ds）' },
-  { symbol: 'ㄘ', pinyin: 'c', name: 'ㄘ (cī)', category: 'initial', example: '詞', phrase: '造詞的詞', hint: '平舌音 "ts"（送氣，如 cats 中的 ts）' },
-  { symbol: 'ㄙ', pinyin: 's', name: 'ㄙ (sī)', category: 'initial', example: '四', phrase: '數字四的四', hint: '平舌音 "s"（如 say）' },
 
-  // --- 介母 Medials (3) ---
-  { symbol: 'ㄧ', pinyin: 'i/y', name: 'ㄧ (yī)', category: 'medial', example: '衣', phrase: '衣服的衣', hint: '漢語拼音 i，英語中的 "ee"（如 meet）' },
-  { symbol: 'ㄨ', pinyin: 'u/w', name: 'ㄨ (wū)', category: 'medial', example: '屋', phrase: '房屋的屋', hint: '漢語拼音 u，英語中的 "oo"（如 boot）' },
-  { symbol: 'ㄩ', pinyin: 'yu/v', name: 'ㄩ (yū)', category: 'medial', example: '雨', phrase: '下雨的雨', hint: '德語的 "ü" 或法語的 "u"' },
-
-  // --- 韻母 Finals (13) ---
-  { symbol: 'ㄚ', pinyin: 'a', name: 'ㄚ (ā)', category: 'final', example: '鴨', phrase: '鴨子的鴨', hint: '英語中的 "a"（如 father）' },
-  { symbol: 'ㄛ', pinyin: 'o', name: 'ㄛ (ō)', category: 'final', example: '喔', phrase: '喔喔叫的喔', hint: '英語中的 "aw"（如 law）' },
-  { symbol: 'ㄜ', pinyin: 'e', name: 'ㄜ (ē)', category: 'final', example: '鵝', phrase: '白鵝的鵝', hint: '發音介於 "uh" 與 "eh" 之間（如 up）' },
-  { symbol: 'ㄝ', pinyin: 'eh', name: 'ㄝ (ê)', category: 'final', example: '椰', phrase: '椰子的椰', hint: '英語中的 "e"（如 yes 中的 ye）' },
-  { symbol: 'ㄞ', pinyin: 'ai', name: 'ㄞ (āi)', category: 'final', example: '愛', phrase: '愛心的愛', hint: '英語中的 "eye"（如 fly 中的 y）' },
-  { symbol: 'ㄟ', pinyin: 'ei', name: 'ㄟ (ēi)', category: 'final', example: '誒', phrase: '誒唷的誒', hint: '英語中的 "ay"（如 say）' },
-  { symbol: 'ㄠ', pinyin: 'ao', name: 'ㄠ (āo)', category: 'final', example: '熬', phrase: '熬夜的熬', hint: '英語中的 "ow"（如 cow）' },
-  { symbol: 'ㄡ', pinyin: 'ou', name: 'ㄡ (ōu)', category: 'final', example: '歐', phrase: '歐洲的歐', hint: '英語中的 "o"（如 go）' },
-  { symbol: 'ㄢ', pinyin: 'an', name: 'ㄢ (ān)', category: 'final', example: '安', phrase: '安全的安', hint: '前鼻音，英語中的 "an"（如 pan）' },
-  { symbol: 'ㄣ', pinyin: 'en', name: 'ㄣ (ēn)', category: 'final', example: '恩', phrase: '恩惠的恩', hint: '前鼻音，英語中的 "un"（如 under）' },
-  { symbol: 'ㄤ', pinyin: 'ang', name: 'ㄤ (āng)', category: 'final', example: '昂', phrase: '昂貴的昂', hint: '後鼻音，英語中的 "ong"（如 song）' },
-  { symbol: 'ㄥ', pinyin: 'eng', name: 'ㄥ (ēng)', category: 'final', example: '風', phrase: '東風的風（韻母）', hint: '後鼻音，英語中的 "ung"（如 lung）' },
-  { symbol: 'ㄦ', pinyin: 'er', name: 'ㄦ (ēr)', category: 'final', example: '兒', phrase: '兒童的兒', hint: '捲舌音，英語中的 "er"（如 her）' },
-
-  // --- 合成音/結合韻 Syllable Synthesis (42) ---
-  { symbol: 'ㄧㄚ', pinyin: 'ya', name: 'ㄧㄚ (ya)', category: 'synthesis', example: '鴨', phrase: '鴨子的鴨', hint: '類似英語中的 "ya"（如 yard）', audioText: '壓' },
-  { symbol: 'ㄧㄛ', pinyin: 'yo', name: 'ㄧㄛ (yo)', category: 'synthesis', example: '唷', phrase: '哎唷的唷', hint: '類似英語中的 "yo"（如 yo-yo）', audioText: '唷' },
-  { symbol: 'ㄧㄝ', pinyin: 'ye', name: 'ㄧㄝ (ye)', category: 'synthesis', example: '椰', phrase: '椰子的椰', hint: '類似英語中的 "ye"（如 yes）', audioText: '椰' },
-  { symbol: 'ㄧㄠ', pinyin: 'yao', name: 'ㄧㄠ (yao)', category: 'synthesis', example: '妖', phrase: '妖怪的妖', hint: '類似英語中的 "yow"（如 yowl）', audioText: '腰' },
-  { symbol: 'ㄧㄡ', pinyin: 'you', name: 'ㄧㄡ (you)', category: 'synthesis', example: '優', phrase: '優秀的優', hint: '類似英語中的 "yo"（如 yoke）', audioText: '優' },
-  { symbol: 'ㄧㄢ', pinyin: 'yan', name: 'ㄧㄢ (yan)', category: 'synthesis', example: '煙', phrase: '抽煙的煙', hint: '類似英語中的 "yen"（如 yen）', audioText: '菸' },
-  { symbol: 'ㄧㄣ', pinyin: 'yin', name: 'ㄧㄣ (yin)', category: 'synthesis', example: '音', phrase: '音樂的音', hint: '類似英語中的 "in"（如 bin）', audioText: '因' },
-  { symbol: 'ㄧㄤ', pinyin: 'yang', name: 'ㄧㄤ (yang)', category: 'synthesis', example: '羊', phrase: '山羊的羊', hint: '類似英語中的 "young"（如 young）', audioText: '央' },
-  { symbol: 'ㄧㄥ', pinyin: 'ying', name: 'ㄧㄥ (ying)', category: 'synthesis', example: '櫻', phrase: '櫻花的櫻', hint: '類似英語中的 "ing"（如 sing）', audioText: '英' },
-  { symbol: 'ㄨㄚ', pinyin: 'wa', name: 'ㄨㄚ (wa)', category: 'synthesis', example: '蛙', phrase: '青蛙的蛙', hint: '類似英語中的 "wa"（如 water）', audioText: '蛙' },
-  { symbol: 'ㄨㄛ', pinyin: 'wo', name: 'ㄨㄛ (wo)', category: 'synthesis', example: '窩', phrase: '鳥窩的窩', hint: '類似英語中的 "wo"（如 woke）', audioText: '窩' },
-  { symbol: 'ㄨㄞ', pinyin: 'wai', name: 'ㄨㄞ (wai)', category: 'synthesis', example: '歪', phrase: '歪斜的歪', hint: '類似英語中的 "why"（如 why）', audioText: '歪' },
-  { symbol: 'ㄨㄟ', pinyin: 'wei', name: 'ㄨㄟ (wei)', category: 'synthesis', example: '威', phrase: '威風的威', hint: '類似英語中的 "way"（如 way）', audioText: '微' },
-  { symbol: 'ㄨㄢ', pinyin: 'wan', name: 'ㄨㄢ (wan)', category: 'synthesis', example: '彎', phrase: '彎曲的彎', hint: '類似英語中的 "one"（如 one）', audioText: '彎' },
-  { symbol: 'ㄨㄣ', pinyin: 'wen', name: 'ㄨㄣ (wen)', category: 'synthesis', example: '溫', phrase: '溫暖的溫', hint: '類似英語中的 "win"（如 win）', audioText: '溫' },
-  { symbol: 'ㄨㄤ', pinyin: 'wang', name: 'ㄨㄤ (wang)', category: 'synthesis', example: '汪', phrase: '汪汪叫的汪', hint: '類似英語中的 "wong"（如 wong）', audioText: '汪' },
-  { symbol: 'ㄨㄥ', pinyin: 'weng', name: 'ㄨㄥ (weng)', category: 'synthesis', example: '翁', phrase: '不倒翁的翁', hint: '類似英語中的 "wung"（如 lung）', audioText: '翁' },
-  { symbol: 'ㄩㄝ', pinyin: 'yue', name: 'ㄩㄝ (yue)', category: 'synthesis', example: '月', phrase: '月亮的月', hint: '發音為 yu-eh', audioText: '約' },
-  { symbol: 'ㄩㄢ', pinyin: 'yuan', name: 'ㄩㄢ (yuan)', category: 'synthesis', example: '鴛', phrase: '鴛鴦的鴛', hint: '發音為 yu-an', audioText: '冤' },
-  { symbol: 'ㄩㄣ', pinyin: 'yun', name: 'ㄩㄣ (yun)', category: 'synthesis', example: '雲', phrase: '白雲的雲', hint: '發音為 yoon', audioText: '暈' },
-  { symbol: 'ㄩㄥ', pinyin: 'yong', name: 'ㄩㄥ (yong)', category: 'synthesis', example: '擁', phrase: '擁抱的擁', hint: '發音為 yung', audioText: '擁' },
-  { symbol: 'ㄅㄚ', pinyin: 'ba', name: 'ㄅㄚ (ba)', category: 'synthesis', example: '爸', phrase: '爸爸的爸', hint: '發音為 b-a', audioText: '八' },
-  { symbol: 'ㄆㄛ', pinyin: 'po', name: 'ㄆㄛ (po)', category: 'synthesis', example: '婆', phrase: '外婆的婆', hint: '發音為 p-o', audioText: '坡' },
-  { symbol: 'ㄇㄧ', pinyin: 'mi', name: 'ㄇㄧ (mi)', category: 'synthesis', example: '咪', phrase: '貓咪的咪', hint: '發音為 m-i', audioText: '咪' },
-  { symbol: 'ㄈㄨ', pinyin: 'fu', name: 'ㄈㄨ (fu)', category: 'synthesis', example: '扶', phrase: '攙扶的扶', hint: '發音為 f-u', audioText: '膚' },
-  { symbol: 'ㄈㄟ', pinyin: 'fei', name: 'ㄈㄟ (fei)', category: 'synthesis', example: '飛', phrase: '飛機的飛', hint: '發音為 f-ei', audioText: '飛' },
-  { symbol: 'ㄉㄚ', pinyin: 'da', name: 'ㄉㄚ (da)', category: 'synthesis', example: '打', phrase: '打球的打', hint: '發音為 d-a', audioText: '搭' },
-  { symbol: 'ㄊㄨ', pinyin: 'tu', name: 'ㄊㄨ (tu)', category: 'synthesis', example: '兔', phrase: '兔子的兔', hint: '發音為 t-u', audioText: '禿' },
-  { symbol: 'ㄋㄧ', pinyin: 'ni', name: 'ㄋㄧ (ni)', category: 'synthesis', example: '泥', phrase: '水泥的泥', hint: '發音為 n-i', audioText: '妮' },
-  { symbol: 'ㄌㄨ', pinyin: 'lu', name: 'ㄌㄨ (lu)', category: 'synthesis', example: '鹿', phrase: '長頸鹿的鹿', hint: '發音為 l-u', audioText: '嚕' },
-  { symbol: 'ㄍㄨ', pinyin: 'gu', name: 'ㄍㄨ (gu)', category: 'synthesis', example: '姑', phrase: '姑姑的姑', hint: '發音為 g-u', audioText: '估' },
-  { symbol: 'ㄎㄨ', pinyin: 'ku', name: 'ㄎㄨ (ku)', category: 'synthesis', example: '哭', phrase: '哭泣的哭', hint: '發音為 k-u', audioText: '哭' },
-  { symbol: 'ㄏㄨ', pinyin: 'hu', name: 'ㄏㄨ (hu)', category: 'synthesis', example: '虎', phrase: '老虎的虎', hint: '發音為 h-u', audioText: '呼' },
-  { symbol: 'ㄐㄧ', pinyin: 'ji', name: 'ㄐㄧ (ji)', category: 'synthesis', example: '雞', phrase: '小雞的雞', hint: '發音為 j-i', audioText: '雞' },
-  { symbol: 'ㄑㄧ', pinyin: 'qi', name: 'ㄑㄧ (qi)', category: 'synthesis', example: '汽', phrase: '汽車的汽', hint: '發音為 q-i', audioText: '七' },
-  { symbol: 'ㄒㄧ', pinyin: 'xi', name: 'ㄒㄧ (xi)', category: 'synthesis', example: '西', phrase: '西瓜的西', hint: '發音為 x-i', audioText: '西' },
-  { symbol: 'ㄓㄨ', pinyin: 'zhu', name: 'ㄓㄨ (zhu)', category: 'synthesis', example: '豬', phrase: '小豬的豬', hint: '發音為 zh-u', audioText: '朱' },
-  { symbol: 'ㄔㄨ', pinyin: 'chu', name: 'ㄔㄨ (chu)', category: 'synthesis', example: '出', phrase: '出發的出', hint: '發音為 ch-u', audioText: '出' },
-  { symbol: 'ㄕㄨ', pinyin: 'shu', name: 'ㄕㄨ (shu)', category: 'synthesis', example: '書', phrase: '看書的書', hint: '發音為 sh-u', audioText: '書' },
-  { symbol: 'ㄖㄨ', pinyin: 'ru', name: 'ㄖㄨ (ru)', category: 'synthesis', example: '乳', phrase: '乳牛的乳', hint: '發音為 r-u', audioText: '如' },
-  { symbol: 'ㄗㄨ', pinyin: 'zu', name: 'ㄗㄨ (zu)', category: 'synthesis', example: '租', phrase: '出租的租', hint: '發音為 z-u', audioText: '租' },
-  { symbol: 'ㄘㄨ', pinyin: 'cu', name: 'ㄘㄨ (cu)', category: 'synthesis', example: '粗', phrase: '粗細的粗', hint: '發音為 c-u', audioText: '粗' },
-  { symbol: 'ㄙㄨ', pinyin: 'su', name: 'ㄙㄨ (su)', category: 'synthesis', example: '蘇', phrase: '蘇打的蘇', hint: '發音為 s-u', audioText: '蘇' },
-
-  // --- 聲調挑戰 Tone Challenge (33) ---
-  { symbol: 'ㄅㄚ', pinyin: 'bā', name: 'ㄅㄚ (bā)', category: 'tone', baseSyllable: 'ㄅㄚ', example: '八', phrase: '數字八的八 (一聲)', hint: '一聲 (Flat)', audioText: '八' },
-  { symbol: 'ㄅㄚˊ', pinyin: 'bá', name: 'ㄅㄚˊ (bá)', category: 'tone', baseSyllable: 'ㄅㄚ', example: '拔', phrase: '拔河的拔 (二聲)', hint: '二聲 (Rising)', audioText: '拔' },
-  { symbol: 'ㄅㄚˇ', pinyin: 'bǎ', name: 'ㄅㄚˇ (bǎ)', category: 'tone', baseSyllable: 'ㄅㄚ', example: '靶', phrase: '打靶的靶 (三聲)', hint: '三聲 (Dipping)', audioText: '靶' },
-  { symbol: 'ㄅㄚˋ', pinyin: 'bà', name: 'ㄅㄚˋ (bà)', category: 'tone', baseSyllable: 'ㄅㄚ', example: '爸', phrase: '爸爸的爸 (四聲)', hint: '四聲 (Falling)', audioText: '爸' },
-  { symbol: '˙ㄅㄚ', pinyin: 'ba', name: '˙ㄅㄚ (ba)', category: 'tone', baseSyllable: 'ㄅㄚ', example: '吧', phrase: '走吧的吧 (輕聲)', hint: '輕聲 (Neutral)', audioText: '吧' },
-
-  { symbol: 'ㄆㄛ', pinyin: 'pō', name: 'ㄆㄛ (pō)', category: 'tone', baseSyllable: 'ㄆㄛ', example: '坡', phrase: '山坡的坡 (一聲)', hint: '一聲 (Flat)', audioText: '坡' },
-  { symbol: 'ㄆㄛˊ', pinyin: 'pó', name: 'ㄆㄛˊ (pó)', category: 'tone', baseSyllable: 'ㄆㄛ', example: '婆', phrase: '老婆的婆 (二聲)', hint: '二聲 (Rising)', audioText: '婆' },
-  { symbol: 'ㄆㄛˇ', pinyin: 'pǒ', name: 'ㄆㄛˇ (pǒ)', category: 'tone', baseSyllable: 'ㄆㄛ', example: '頗', phrase: '偏頗的頗 (三聲)', hint: '三聲 (Dipping)', audioText: '頗' },
-  { symbol: 'ㄆㄛˋ', pinyin: 'pò', name: 'ㄆㄛˋ (pò)', category: 'tone', baseSyllable: 'ㄆㄛ', example: '破', phrase: '破爛的破 (四聲)', hint: '四聲 (Falling)', audioText: '破' },
-
-  { symbol: 'ㄇㄧ', pinyin: 'mī', name: 'ㄇㄧ (mī)', category: 'tone', baseSyllable: 'ㄇㄧ', example: '咪', phrase: '貓咪的咪 (一聲)', hint: '一聲 (Flat)', audioText: '咪' },
-  { symbol: 'ㄇㄧˊ', pinyin: 'mí', name: 'ㄇㄧˊ (mí)', category: 'tone', baseSyllable: 'ㄇㄧ', example: '迷', phrase: '迷路的迷 (二聲)', hint: '二聲 (Rising)', audioText: '迷' },
-  { symbol: 'ㄇㄧˇ', pinyin: 'mǐ', name: 'ㄇㄧˇ (mǐ)', category: 'tone', baseSyllable: 'ㄇㄧ', example: '米', phrase: '白米的米 (三聲)', hint: '三聲 (Dipping)', audioText: '米' },
-  { symbol: 'ㄇㄧˋ', pinyin: 'mì', name: 'ㄇㄧˋ (mì)', category: 'tone', baseSyllable: 'ㄇㄧ', example: '密', phrase: '秘密的密 (四聲)', hint: '四聲 (Falling)', audioText: '密' },
-
-  { symbol: 'ㄈㄨ', pinyin: 'fū', name: 'ㄈㄨ (fū)', category: 'tone', baseSyllable: 'ㄈㄨ', example: '膚', phrase: '皮膚的膚 (一聲)', hint: '一聲 (Flat)', audioText: '膚' },
-  { symbol: 'ㄈㄨˊ', pinyin: 'fú', name: 'ㄈㄨˊ (fú)', category: 'tone', baseSyllable: 'ㄈㄨ', example: '福', phrase: '福氣的福 (二聲)', hint: '二聲 (Rising)', audioText: '福' },
-  { symbol: 'ㄈㄨˇ', pinyin: 'fǔ', name: 'ㄈㄨˇ (fǔ)', category: 'tone', baseSyllable: 'ㄈㄨ', example: '府', phrase: '政府的府 (三聲)', hint: '三聲 (Dipping)', audioText: '府' },
-  { symbol: 'ㄈㄨˋ', pinyin: 'fù', name: 'ㄈㄨˋ (fù)', category: 'tone', baseSyllable: 'ㄈㄨ', example: '富', phrase: '富有的富 (四聲)', hint: '四聲 (Falling)', audioText: '富' },
-
-  { symbol: 'ㄈㄟ', pinyin: 'fēi', name: 'ㄈㄟ (fēi)', category: 'tone', baseSyllable: 'ㄈㄟ', example: '飛', phrase: '飛機的飛 (一聲)', hint: '一聲 (Flat)', audioText: '飛' },
-  { symbol: 'ㄈㄟˊ', pinyin: 'féi', name: 'ㄈㄟˊ (féi)', category: 'tone', baseSyllable: 'ㄈㄟ', example: '肥', phrase: '肥胖的肥 (二聲)', hint: '二聲 (Rising)', audioText: '肥' },
-  { symbol: 'ㄈㄟˇ', pinyin: 'fěi', name: 'ㄈㄟˇ (fěi)', category: 'tone', baseSyllable: 'ㄈㄟ', example: '匪', phrase: '土匪的匪 (三聲)', hint: '三聲 (Dipping)', audioText: '匪' },
-  { symbol: 'ㄈㄟˋ', pinyin: 'fèi', name: 'ㄈㄟˋ (fèi)', category: 'tone', baseSyllable: 'ㄈㄟ', example: '費', phrase: '免費的費 (四聲)', hint: '四聲 (Falling)', audioText: '費' },
-
-  { symbol: 'ㄉㄚ', pinyin: 'dā', name: 'ㄉㄚ (dā)', category: 'tone', baseSyllable: 'ㄉㄚ', example: '搭', phrase: '搭車的搭 (一聲)', hint: '一聲 (Flat)', audioText: '搭' },
-  { symbol: 'ㄉㄚˊ', pinyin: 'dá', name: 'ㄉㄚˊ (dá)', category: 'tone', baseSyllable: 'ㄉㄚ', example: '答', phrase: '回答的答 (二聲)', hint: '二聲 (Rising)', audioText: '答' },
-  { symbol: 'ㄉㄚˇ', pinyin: 'dǎ', name: 'ㄉㄚˇ (dǎ)', category: 'tone', baseSyllable: 'ㄉㄚ', example: '打', phrase: '打球的打 (三聲)', hint: '三聲 (Dipping)', audioText: '打' },
-  { symbol: 'ㄉㄚˋ', pinyin: 'dà', name: 'ㄉㄚˋ (dà)', category: 'tone', baseSyllable: 'ㄉㄚ', example: '大', phrase: '大小的大 (四聲)', hint: '四聲 (Falling)', audioText: '大' },
-
-  { symbol: 'ㄌㄨ', pinyin: 'lū', name: 'ㄌㄨ (lū)', category: 'tone', baseSyllable: 'ㄌㄨ', example: '嚕', phrase: '呼嚕的嚕 (一聲)', hint: '一聲 (Flat)', audioText: '嚕' },
-  { symbol: 'ㄌㄨˊ', pinyin: 'lú', name: 'ㄌㄨˊ (lú)', category: 'tone', baseSyllable: 'ㄌㄨ', example: '爐', phrase: '火爐的爐 (二聲)', hint: '二聲 (Rising)', audioText: '爐' },
-  { symbol: 'ㄌㄨˇ', pinyin: 'lǔ', name: 'ㄌㄨˇ (lǔ)', category: 'tone', baseSyllable: 'ㄌㄨ', example: '魯', phrase: '魯肉的魯 (三聲)', hint: '三聲 (Dipping)', audioText: '魯' },
-  { symbol: 'ㄌㄨˋ', pinyin: 'lù', name: 'ㄌㄨˋ (lù)', category: 'tone', baseSyllable: 'ㄌㄨ', example: '路', phrase: '道路的路 (四聲)', hint: '四聲 (Falling)', audioText: '路' },
-
-  { symbol: 'ㄒㄧ', pinyin: 'xī', name: 'ㄒㄧ (xī)', category: 'tone', baseSyllable: 'ㄒㄧ', example: '西', phrase: '東西的西 (一聲)', hint: '一聲 (Flat)', audioText: '西' },
-  { symbol: 'ㄒㄧˊ', pinyin: 'xí', name: 'ㄒㄧˊ (xí)', category: 'tone', baseSyllable: 'ㄒㄧ', example: '席', phrase: '主席的席 (二聲)', hint: '二聲 (Rising)', audioText: '席' },
-  { symbol: 'ㄒㄧˇ', pinyin: 'xǐ', name: 'ㄒㄧˇ (xǐ)', category: 'tone', baseSyllable: 'ㄒㄧ', example: '洗', phrase: '洗衣服的洗 (三聲)', hint: '三聲 (Dipping)', audioText: '洗' },
-  { symbol: 'ㄒㄧˋ', pinyin: 'xì', name: 'ㄒㄧˋ (xì)', category: 'tone', baseSyllable: 'ㄒㄧ', example: '細', phrase: '粗細的細 (四聲)', hint: '四聲 (Falling)', audioText: '細' },
-
-  // --- 完整單字挑戰 Vocabulary Challenge (21) ---
-  { symbol: 'ㄓㄨㄛ ㄗ˙', pinyin: 'zhuōzi', name: 'ㄓㄨㄛ ㄗ˙ (zhuōzi)', category: 'vocabulary', example: '桌', phrase: '桌子', hint: '桌子 (Table / Desk)', audioText: '桌子' },
-  { symbol: 'ㄧˇ ㄗ˙', pinyin: 'yǐzi', name: 'ㄧˇ ㄗ˙ (yǐzi)', category: 'vocabulary', example: '椅', phrase: '椅子', hint: '椅子 (Chair)', audioText: '椅子' },
-  { symbol: 'ㄆㄧㄥˊ ㄍㄨㄛˇ', pinyin: 'píngguǒ', name: 'ㄆㄧㄥˊ ㄍㄨㄛˇ (píngguǒ)', category: 'vocabulary', example: '蘋', phrase: '蘋果', hint: '蘋果 (Apple)', audioText: '蘋果' },
-  { symbol: 'ㄒㄧㄤ ㄐㄧㄠ', pinyin: 'xiāngjiāo', name: 'ㄒㄧㄤ ㄐㄧㄠ (xiāngjiāo)', category: 'vocabulary', example: '香', phrase: '香蕉', hint: '香蕉 (Banana)', audioText: '香蕉' },
-  { symbol: 'ㄈㄟ ㄐㄧ', pinyin: 'fēijī', name: 'ㄈㄟ ㄐㄧ (fēijī)', category: 'vocabulary', example: '飛', phrase: '飛機', hint: '飛機 (Airplane)', audioText: '飛機' },
-  { symbol: 'ㄑㄧˋ ㄔㄜ', pinyin: 'qìchē', name: 'ㄑㄧˋ ㄔㄜ (qìchē)', category: 'vocabulary', example: '汽', phrase: '汽車', hint: '汽車 (Car)', audioText: '汽車' },
-  { symbol: 'ㄒㄧ ㄍㄨㄚ', pinyin: 'xīguā', name: 'ㄒㄧ ㄍㄨㄚ (xīguā)', category: 'vocabulary', example: '西', phrase: '西瓜', hint: '西瓜 (Watermelon)', audioText: '西瓜' },
-  { symbol: 'ㄇㄠ ㄇㄧ', pinyin: 'māomī', name: 'ㄇㄠ ㄇㄧ (māomī)', category: 'vocabulary', example: '貓', phrase: '貓咪', hint: '貓咪 (Cat)', audioText: '貓咪' },
-  { symbol: 'ㄒㄧㄠˇ ㄍㄡˇ', pinyin: 'xiǎogǒu', name: 'ㄒㄧㄠˇ ㄍㄡˇ (xiǎogǒu)', category: 'vocabulary', example: '狗', phrase: '小狗', hint: '小狗 (Dog)', audioText: '小狗' },
-  { symbol: 'ㄧ ㄈㄨˊ', pinyin: 'yīfú', name: 'ㄧ ㄈㄨˊ (yīfú)', category: 'vocabulary', example: '衣', phrase: '衣服', hint: '衣服 (Clothes)', audioText: '衣服' },
-  { symbol: 'ㄉㄧㄢˋ ㄏㄨㄚˋ', pinyin: 'diànhuà', name: 'ㄉㄧㄢˋ ㄏㄨㄚˋ (diànhuà)', category: 'vocabulary', example: '電', phrase: '電話', hint: '電話 (Telephone)', audioText: '電話' },
-  { symbol: 'ㄇㄧㄢˋ ㄅㄠ', pinyin: 'miànbāo', name: 'ㄇㄧㄢˋ ㄅㄠ (miànbāo)', category: 'vocabulary', example: '麵', phrase: '麵包', hint: '麵包 (Bread)', audioText: '麵包' },
-  { symbol: 'ㄋㄧㄡˊ ㄋㄞˇ', pinyin: 'niúnǎi', name: 'ㄋㄧㄡˊ ㄋㄞˇ (niúnǎi)', category: 'vocabulary', example: '牛', phrase: '牛奶', hint: '牛奶 (Milk)', audioText: '牛奶' },
-  { symbol: 'ㄊㄞˋ ㄧㄤˊ', pinyin: 'tàiyáng', name: 'ㄊㄞˋ ㄧㄤˊ (tàiyáng)', category: 'vocabulary', example: '太', phrase: '太陽', hint: '太陽 (Sun)', audioText: '太陽' },
-  { symbol: 'ㄩㄝˋ ㄌㄧㄤˋ', pinyin: 'yuèliàng', name: 'ㄩㄝˋ ㄌㄧㄤˋ (yuèliàng)', category: 'vocabulary', example: '月', phrase: '月亮', hint: '月亮 (Moon)', audioText: '月亮' },
-  { symbol: 'ㄊㄨˋ ㄗ˙', pinyin: 'tùzi', name: 'ㄊㄨˋ ㄗ˙ (tùzi)', category: 'vocabulary', example: '兔', phrase: '兔子', hint: '兔子 (Rabbit)', audioText: '兔子' },
-  { symbol: 'ㄌㄠˇ ㄕ', pinyin: 'lǎoshī', name: 'ㄌㄠˇ ㄕ (lǎoshī)', category: 'vocabulary', example: '老', phrase: '老師', hint: '老師 (Teacher)', audioText: '老師' },
-  { symbol: 'ㄒㄩㄝˊ ㄕㄥ', pinyin: 'xuéshēng', name: 'ㄒㄩㄝˊ ㄕㄥ (xuéshēng)', category: 'vocabulary', example: '學', phrase: '學生', hint: '學生 (Student)', audioText: '學生' },
-  { symbol: 'ㄑㄧˋ ㄑㄧㄡˊ', pinyin: 'qìqiú', name: 'ㄑㄧˋ ㄑㄧㄡˊ (qìqiú)', category: 'vocabulary', example: '氣', phrase: '氣球', hint: '氣球 (Balloon)', audioText: '氣球' },
-  { symbol: 'ㄅㄧㄥˇ ㄍㄢ', pinyin: 'bǐnggān', name: 'ㄅㄧㄥˇ ㄍㄢ (bǐnggān)', category: 'vocabulary', example: '餅', phrase: '餅乾', hint: '餅乾 (Cookie)', audioText: '餅乾' },
-  { symbol: 'ㄕㄨㄟˇ ㄍㄨㄛˇ', pinyin: 'shuǐguǒ', name: 'ㄕㄨㄟˇ ㄍㄨㄛˇ (shuǐguǒ)', category: 'vocabulary', example: '水', phrase: '水果', hint: '水果 (Fruit)', audioText: '水果' }
-];
 
 // ==========================================================================
 // 2. 應用程式狀態 (App State)
@@ -708,7 +555,23 @@ function buildBopomofoChart() {
   if (toneContainer) toneContainer.innerHTML = '';
   if (vocabularyContainer) vocabularyContainer.innerHTML = '';
 
+  const seenInitials = new Set();
+  const seenMedials = new Set();
+  const seenFinals = new Set();
+
   BOPOMOFO_DATA.forEach(bopo => {
+    // Skip duplicate basic alphabet symbols on the reference chart
+    if (bopo.category === 'initial') {
+      if (seenInitials.has(bopo.symbol)) return;
+      seenInitials.add(bopo.symbol);
+    } else if (bopo.category === 'medial') {
+      if (seenMedials.has(bopo.symbol)) return;
+      seenMedials.add(bopo.symbol);
+    } else if (bopo.category === 'final') {
+      if (seenFinals.has(bopo.symbol)) return;
+      seenFinals.add(bopo.symbol);
+    }
+
     const item = document.createElement('div');
     item.className = `chart-item chart-${bopo.category}`;
     item.title = `發音提示: ${bopo.hint}`;
@@ -1188,6 +1051,8 @@ function loadSettings() {
       console.error('Error parsing saved settings:', e);
     }
   }
+  // Force choices mode only
+  state.settings.questionType = 'choices';
 }
 
 function syncSettingsUI() {

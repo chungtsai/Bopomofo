@@ -274,31 +274,31 @@
               <div class="radio-group">
                 <label class="radio-label">
                   <input type="radio" name="scope" value="all">
-                  <span>全部 (37字)</span>
+                  <span>全部 (111題)</span>
                 </label>
                 <label class="radio-label">
                   <input type="radio" name="scope" value="initial">
-                  <span>聲母 (21字)</span>
+                  <span>聲母 (63題)</span>
                 </label>
                 <label class="radio-label">
                   <input type="radio" name="scope" value="medial">
-                  <span>介母 (3字)</span>
+                  <span>介母 (9題)</span>
                 </label>
                 <label class="radio-label">
                   <input type="radio" name="scope" value="final">
-                  <span>韻母 (13字)</span>
+                  <span>韻母 (39題)</span>
                 </label>
                 <label class="radio-label">
                   <input type="radio" name="scope" value="synthesis">
-                  <span>合成音 / 結合韻 (43字)</span>
+                  <span>合成音 / 結合韻 (103題)</span>
                 </label>
                 <label class="radio-label">
                   <input type="radio" name="scope" value="tone" checked>
-                  <span>聲調聲辨挑戰 (33字)</span>
+                  <span>聲調聲辨挑戰 (200題)</span>
                 </label>
                 <label class="radio-label">
                   <input type="radio" name="scope" value="vocabulary">
-                  <span>完整單字挑戰 (21字)</span>
+                  <span>完整單字挑戰 (200題)</span>
                 </label>
               </div>
             </div>
@@ -318,7 +318,8 @@
               </div>
             </div>
 
-            <!-- Question Type -->
+            <!-- Question Type (Hidden / Choices Mode Only) -->
+            <!--
             <div class="form-group">
               <label class="form-label">答題題型</label>
               <div class="radio-group">
@@ -332,6 +333,7 @@
                 </label>
               </div>
             </div>
+            -->
 
             <!-- Voice Selection -->
             <div class="form-group">
@@ -409,21 +411,21 @@
           </div>
 
           <div class="chart-section-title mt-4">
-            <span class="dot synthesis-dot"></span> 合成音 / 結合韻 Synthesis (43)
+            <span class="dot synthesis-dot"></span> 合成音 / 結合韻 Synthesis (103)
           </div>
           <div class="chart-grid synthesis-grid" id="chart-synthesis">
             <!-- Filled dynamically -->
           </div>
 
           <div class="chart-section-title mt-4">
-            <span class="dot tone-dot"></span> 聲調挑戰 Tone Challenge (33)
+            <span class="dot tone-dot"></span> 聲調挑戰 Tone Challenge (200)
           </div>
           <div class="chart-grid tone-grid" id="chart-tone">
             <!-- Filled dynamically -->
           </div>
 
           <div class="chart-section-title mt-4">
-            <span class="dot vocabulary-dot"></span> 完整單字對照 Vocabulary (21)
+            <span class="dot vocabulary-dot"></span> 完整單字對照 Vocabulary (200)
           </div>
           <div class="chart-grid vocabulary-grid" id="chart-vocabulary">
             <!-- Filled dynamically -->
@@ -440,6 +442,7 @@
     <p>© 2026 注音聲辨王 · 讓學習注音變得簡單有趣</p>
   </footer>
 
+  <script src="bopomofo-data.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
